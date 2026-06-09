@@ -1,0 +1,173 @@
+<!doctype html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>منصة متاجر إلكترونية للبائعين في مصر</title>
+  <meta name="description" content="سجل اهتمامك في تجربة منصة SaaS جديدة لإنشاء وإدارة المتاجر الإلكترونية للبائعين أونلاين في مصر." />
+  <meta name="theme-color" content="#0f2a4a" />
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <header class="site-header" aria-label="رأس الصفحة">
+    <div class="container nav">
+      <a href="#top" class="brand" aria-label="الرئيسية">
+        <span class="brand-mark">م</span>
+        <span class="brand-text">منصة المتاجر</span>
+      </a>
+      <a class="nav-cta" href="#lead-form">سجل اهتمامك</a>
+    </div>
+  </header>
+
+  <main id="top">
+    <section class="hero section-pad">
+      <div class="container hero-grid">
+        <div class="hero-content">
+          <p class="eyebrow">تجربة أولى للبائعين أونلاين في مصر</p>
+          <h1>لو بتبيع أونلاين، هل نفسك يبقى عندك متجر إلكتروني احترافي في دقائق؟</h1>
+          <p class="hero-description">
+            بنطوّر منصة جديدة تساعد البائعين في مصر على إنشاء متجر إلكتروني خاص بهم وإدارة الطلبات بسهولة من مكان واحد.
+          </p>
+          <div class="hero-actions">
+            <a class="primary-button" href="#lead-form">سجل اهتمامك</a>
+            <a class="secondary-link" href="#features">اعرف هتستفيد بإيه</a>
+          </div>
+          <ul class="hero-points" aria-label="نقاط مهمة">
+            <li>بدون خبرة تقنية</li>
+            <li>مناسب للبائعين على السوشيال</li>
+            <li>الهدف قياس الاهتمام قبل الإطلاق</li>
+          </ul>
+        </div>
+
+        <aside class="form-card" aria-label="نموذج تسجيل الاهتمام">
+          <div class="form-card-header">
+            <p class="small-label">انضم لقائمة التجربة الأولى</p>
+            <h2>سجل بياناتك</h2>
+            <p>مش هنبيعلك حاجة دلوقتي. الهدف نعرف احتياجك ونتواصل مع المهتمين وقت التجربة.</p>
+          </div>
+
+          <form id="lead-form" class="lead-form" novalidate>
+            <div class="field-group hidden-field" aria-hidden="true">
+              <label for="website">Website</label>
+              <input id="website" name="website" type="text" tabindex="-1" autocomplete="off" />
+            </div>
+
+            <div class="field-group">
+              <label for="fullName">الاسم بالكامل <span>*</span></label>
+              <input id="fullName" name="fullName" type="text" placeholder="مثال: أحمد محمد" autocomplete="name" required />
+              <small class="error-message" data-error-for="fullName"></small>
+            </div>
+
+            <div class="field-group">
+              <label for="phone">رقم الموبايل <span>*</span></label>
+              <input id="phone" name="phone" type="tel" inputmode="tel" placeholder="مثال: 01012345678" autocomplete="tel" required />
+              <small class="error-message" data-error-for="phone"></small>
+            </div>
+
+            <div class="field-group">
+              <label for="email">البريد الإلكتروني <em>(اختياري)</em></label>
+              <input id="email" name="email" type="email" placeholder="name@example.com" autocomplete="email" />
+              <small class="error-message" data-error-for="email"></small>
+            </div>
+
+            <div class="field-group">
+              <label for="currentPlatform">أين تبيع حالياً؟ <span>*</span></label>
+              <select id="currentPlatform" name="currentPlatform" required>
+                <option value="" selected disabled>اختر منصة البيع الحالية</option>
+                <option value="فيسبوك">فيسبوك</option>
+                <option value="واتساب">واتساب</option>
+                <option value="إنستجرام">إنستجرام</option>
+                <option value="تيك توك">تيك توك</option>
+                <option value="متجر إلكتروني">متجر إلكتروني</option>
+              </select>
+              <small class="error-message" data-error-for="currentPlatform"></small>
+            </div>
+
+            <div class="field-group">
+              <label for="weeklyOrders">عدد الطلبات أسبوعياً <span>*</span></label>
+              <select id="weeklyOrders" name="weeklyOrders" required>
+                <option value="" selected disabled>اختر متوسط الطلبات</option>
+                <option value="أقل من 10">أقل من 10</option>
+                <option value="10 إلى 50">10 إلى 50</option>
+                <option value="50 إلى 100">50 إلى 100</option>
+                <option value="أكثر من 100">أكثر من 100</option>
+              </select>
+              <small class="error-message" data-error-for="weeklyOrders"></small>
+            </div>
+
+            <button id="submitButton" class="submit-button" type="submit">سجل الآن</button>
+            <p class="privacy-note">بياناتك هتستخدم فقط للتواصل معك عند بدء التجربة الأولى.</p>
+          </form>
+
+          <div id="successMessage" class="success-message" role="status" aria-live="polite" hidden>
+            <strong>شكراً لك 🌷</strong>
+            <span>تم تسجيل بياناتك وسنتواصل معك عند بدء التجربة الأولى.</span>
+          </div>
+        </aside>
+      </div>
+    </section>
+
+    <section id="features" class="features section-pad">
+      <div class="container">
+        <div class="section-heading">
+          <p class="eyebrow">المشكلة اللي بنحلها</p>
+          <h2>بدل ما الطلبات تضيع بين الرسائل، خليك منظم من مكان واحد</h2>
+          <p>المنصة مصممة للبائعين اللي بيبيعوا على السوشيال وعايزين شكل احترافي وإدارة أسهل للطلبات والعملاء.</p>
+        </div>
+
+        <div class="features-grid">
+          <article class="feature-card">
+            <span class="feature-icon">🏪</span>
+            <h3>إنشاء متجر إلكتروني خاص بك</h3>
+            <p>رابط متجر منظم تعرض عليه منتجاتك بدل الاعتماد على الرسائل فقط.</p>
+          </article>
+          <article class="feature-card">
+            <span class="feature-icon">📦</span>
+            <h3>إدارة الطلبات بسهولة</h3>
+            <p>تابع الطلبات الجديدة وحالات التجهيز والشحن من لوحة واحدة.</p>
+          </article>
+          <article class="feature-card">
+            <span class="feature-icon">👥</span>
+            <h3>متابعة العملاء</h3>
+            <p>اعرف مين اشترى منك قبل كده وتابع بيانات العملاء والطلبات السابقة.</p>
+          </article>
+          <article class="feature-card">
+            <span class="feature-icon">💳</span>
+            <h3>الدفع الإلكتروني</h3>
+            <p>إمكانية ربط طرق دفع إلكتروني بجانب الدفع عند الاستلام حسب التجربة والتعاقدات.</p>
+          </article>
+          <article class="feature-card">
+            <span class="feature-icon">🚚</span>
+            <h3>ربط شركات الشحن</h3>
+            <p>تنظيم الشحن ومتابعة حالة الطلب بشكل أوضح للتاجر والعميل.</p>
+          </article>
+          <article class="feature-card">
+            <span class="feature-icon">✨</span>
+            <h3>تصميم احترافي بدون خبرة تقنية</h3>
+            <p>قوالب جاهزة وتجربة سهلة تساعدك تبدأ بسرعة بدون مبرمج.</p>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section class="trust section-pad">
+      <div class="container trust-box">
+        <div>
+          <p class="eyebrow">إثبات اهتمام السوق</p>
+          <h2>المنصة حالياً تحت التطوير ويتم جمع قائمة المهتمين للمشاركة في التجربة الأولى.</h2>
+        </div>
+        <a class="primary-button" href="#lead-form">سجل اهتمامك</a>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <div class="container footer-content">
+      <p>© <span id="year"></span> منصة المتاجر. صفحة اختبار اهتمام السوق.</p>
+      <a href="#lead-form">الانضمام لقائمة التجربة</a>
+    </div>
+  </footer>
+
+  <script src="script.js"></script>
+</body>
+</html>

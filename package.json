@@ -1,0 +1,9 @@
+{
+  "name": "saas-lead-landing",
+  "version": "1.0.0",
+  "private": true,
+  "description": "RTL Arabic landing page for collecting SaaS e-commerce platform leads.",
+  "scripts": {
+    "start": "npx serve ."
+  }
+}
