@@ -96,7 +96,6 @@ document.addEventListener("DOMContentLoaded", () => {
   async function submitLead(data) {
     if (
       !WEBHOOK_URL ||
-      WEBHOOK_URL === "https://script.google.com/macros/s/AKfycbwKZ-7Fl5QKK89m4SrvBwcnS2szP505gEe9O3F4f03mhrS4qP4DgRJ7aj2_XNKOSFPG/execهنا" ||
       !WEBHOOK_URL.startsWith("https://script.google.com/macros/s/") ||
       !WEBHOOK_URL.endsWith("/exec")
     ) {
@@ -136,6 +135,15 @@ document.addEventListener("DOMContentLoaded", () => {
 
     try {
       await submitLead(payload);
+
+      // Google Analytics Lead Event
+      if (typeof gtag === "function") {
+        gtag("event", "lead_submit", {
+          event_category: "lead_generation",
+          event_label: payload.currentPlatform,
+          weekly_orders: payload.weeklyOrders
+        });
+      }
 
       form.reset();
       form.hidden = true;
