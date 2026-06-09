@@ -59,18 +59,21 @@ document.addEventListener("DOMContentLoaded", () => {
       return false;
     }
 
+    // الاسم فقط إلزامي
     if (!data.fullName || data.fullName.length < 3) {
       setError("fullName", "اكتب الاسم بالكامل.");
       isValid = false;
     }
 
+    // رقم الموبايل اختياري، لكن لو اتكتب لازم يكون صحيح
     const egyptPhonePattern = /^(?:\+?20|0)?1[0125][0-9]{8}$/;
 
-    if (!data.phone || !egyptPhonePattern.test(data.phone)) {
-      setError("phone", "اكتب رقم موبايل مصري صحيح.");
+    if (data.phone && !egyptPhonePattern.test(data.phone)) {
+      setError("phone", "اكتب رقم موبايل مصري صحيح أو اتركه فارغاً.");
       isValid = false;
     }
 
+    // البريد الإلكتروني اختياري، لكن لو اتكتب لازم يكون صحيح
     if (data.email) {
       const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
@@ -139,6 +142,7 @@ document.addEventListener("DOMContentLoaded", () => {
       // Google Analytics Lead Event
       if (typeof gtag === "function") {
         gtag("event", "lead_submit", {
+          send_to: "G-67Q5HKNXBM",
           event_category: "lead_generation",
           event_label: payload.currentPlatform,
           weekly_orders: payload.weeklyOrders
