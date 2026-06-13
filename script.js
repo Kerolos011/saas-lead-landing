@@ -84,9 +84,25 @@ function getFormData() {
 }
 
 async function submitLead(payload) {
-  if (!WEBHOOK_URL || WEBHOOK_URL.includes("PUT_YOUR_GOOGLE_APPS_SCRIPT")) {
-    throw new Error("لم يتم ضبط رابط Google Apps Script Webhook داخل ملف script.js");
-  }
+if (
+!WEBHOOK_URL ||
+WEBHOOK_URL.includes("PASTE_YOUR_GOOGLE_APPS_SCRIPT_EXEC_URL_HERE") ||
+WEBHOOK_URL.includes("PUT_YOUR_WEBHOOK_URL_HERE") ||
+!WEBHOOK_URL.startsWith("https://script.google.com/macros/s/") ||
+!WEBHOOK_URL.endsWith("/exec")
+) {
+throw new Error("لم يتم ضبط رابط Google Apps Script Webhook داخل ملف script.js");
+}
+
+await fetch(WEBHOOK_URL, {
+method: "POST",
+mode: "no-cors",
+headers: {
+"Content-Type": "text/plain;charset=utf-8"
+},
+body: JSON.stringify(payload)
+});
+}
 
   await fetch(WEBHOOK_URL, {
     method: "POST",
