@@ -1,3 +1,4 @@
+عايز اعرف ليه بيطلع خطأ هنا؟
 /*
   1) انشر Google Apps Script Web App.
   2) ضع رابط النشر هنا بدل WEBHOOK_URL.
@@ -84,19 +85,9 @@ function getFormData() {
 }
 
 async function submitLead(payload) {
-  if (!WEBHOOK_URL || WEBHOOK_URL.includes("PUT_YOUR_GOOGLE_APPS_SCRIPT")) {
+  if (!WEBHOOK_URL || WEBHOOK_URL.includes("https://script.google.com/macros/s/AKfycbxIOHibeMTJIPQVnguBLkapCi54qzDvHaE7wvZpVuCVudfExvJ2x0NYND7flQPc8UksuQ/exec")) {
     throw new Error("لم يتم ضبط رابط Google Apps Script Webhook داخل ملف script.js");
   }
-
-await fetch(WEBHOOK_URL, {
-method: "POST",
-mode: "no-cors",
-headers: {
-"Content-Type": "text/plain;charset=utf-8"
-},
-body: JSON.stringify(payload)
-});
-}
 
   await fetch(WEBHOOK_URL, {
     method: "POST",
