@@ -1,4 +1,3 @@
-عايز اعرف ليه بيطلع خطأ هنا؟
 /*
   1) انشر Google Apps Script Web App.
   2) ضع رابط النشر هنا بدل WEBHOOK_URL.
