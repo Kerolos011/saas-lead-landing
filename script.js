@@ -111,6 +111,14 @@ form.addEventListener("submit", async (event) => {
 
   try {
     await submitLead(payload);
+    if (typeof gtag === "function") {
+gtag("event", "lead_submit", {
+send_to: "G-67Q5HKNXBM",
+event_category: "lead_generation",
+event_label: payload.currentPlatform || "unknown",
+weekly_orders: payload.weeklyOrders || "unknown"
+});
+}
     form.reset();
     form.hidden = true;
     successMessage.hidden = false;
