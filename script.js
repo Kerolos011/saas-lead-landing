@@ -1,4 +1,4 @@
-const WEBHOOK_URL = "https://script.google.com/macros/s/AKfycbwKZ-7Fl5QKK89m4SrvBwcnS2szP505gEe9O3F4f03mhrS4qP4DgRJ7aj2_XNKOSFPG/exec";
+const WEBHOOK_URL = "https://script.google.com/macros/s/AKfycbxIOHibeMTJIPQVnguBLkapCi54qzDvHaE7wvZpVuCVudfExvJ2x0NYND7flQPc8UksuQ/exec";
 
 document.addEventListener("DOMContentLoaded", () => {
 const form = document.getElementById("lead-form");
@@ -12,7 +12,7 @@ year.textContent = new Date().getFullYear();
 }
 
 if (!form) {
-console.error("Form not found: تأكد أن id='lead-form' موجود في index.html");
+console.error("Form not found");
 return;
 }
 
@@ -54,8 +54,8 @@ return {
   email: String(formData.get("email") || "").trim(),
   currentPlatform: String(formData.get("currentPlatform") || ""),
   weeklyOrders: String(formData.get("weeklyOrders") || ""),
-  registeredAt: new Date().toISOString(),
-  website: String(formData.get("website") || "")
+  website: String(formData.get("website") || ""),
+  registeredAt: new Date().toISOString()
 };
 ```
 
@@ -107,7 +107,7 @@ return isValid;
 
 }
 
-function setHiddenValue(id, value) {
+function setHiddenField(id, value) {
 const element = document.getElementById(id);
 
 ```
@@ -118,19 +118,19 @@ if (element) {
 
 }
 
-function trackLeadSubmit(payload) {
+function sendAnalyticsEvent(data) {
 if (typeof gtag === "function") {
 gtag("event", "lead_submit", {
 send_to: "G-67Q5HKNXBM",
 event_category: "lead_generation",
-event_label: payload.currentPlatform,
-weekly_orders: payload.weeklyOrders
+event_label: data.currentPlatform,
+weekly_orders: data.weeklyOrders
 });
 }
 }
 
-function showSuccess(payload) {
-trackLeadSubmit(payload);
+function showSuccess(data) {
+sendAnalyticsEvent(data);
 
 ```
 form.reset();
@@ -153,26 +153,27 @@ event.preventDefault();
 event.stopPropagation();
 
 ```
-const payload = getFormData();
+const data = getFormData();
 
-if (!validateForm(payload)) {
+if (!validateForm(data)) {
   return;
 }
 
-setHiddenValue("source", "SaaS Landing Page");
-setHiddenValue("userAgent", navigator.userAgent);
-setHiddenValue("submittedAt", payload.registeredAt);
+setHiddenField("source", "SaaS Landing Page");
+setHiddenField("userAgent", navigator.userAgent);
+setHiddenField("submittedAt", data.registeredAt);
 
 submitButton.disabled = true;
 submitButton.textContent = "جاري التسجيل...";
 
-let completed = false;
+let finished = false;
 
-const finish = () => {
-  if (completed) return;
-  completed = true;
-  showSuccess(payload);
-};
+function finish() {
+  if (finished) return;
+
+  finished = true;
+  showSuccess(data);
+}
 
 if (iframe) {
   iframe.onload = finish;
