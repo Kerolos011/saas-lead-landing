@@ -84,7 +84,7 @@ function getFormData() {
 }
 
 async function submitLead(payload) {
-  if (!WEBHOOK_URL || WEBHOOK_URL.includes("https://script.google.com/macros/s/AKfycbxIOHibeMTJIPQVnguBLkapCi54qzDvHaE7wvZpVuCVudfExvJ2x0NYND7flQPc8UksuQ/exec")) {
+  if (!WEBHOOK_URL || WEBHOOK_URL.includes("Put")) {
     throw new Error("لم يتم ضبط رابط Google Apps Script Webhook داخل ملف script.js");
   }
 
