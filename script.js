@@ -105,32 +105,76 @@ return isValid;
 
 }
 
-async function submitLead(data) {
+function submitLead(data) {
+return new Promise((resolve, reject) => {
 if (
 !WEBHOOK_URL ||
 !WEBHOOK_URL.startsWith("https://script.google.com/macros/s/") ||
 !WEBHOOK_URL.endsWith("/exec")
 ) {
-throw new Error("رابط Google Apps Script Webhook غير مضبوط أو لا ينتهي بـ /exec");
+reject(new Error("رابط Google Apps Script Webhook غير مضبوط أو لا ينتهي بـ /exec"));
+return;
 }
 
 ```
-const params = new URLSearchParams();
+  const iframeName = "googleAppsScriptHiddenFrame";
+  let iframe = document.querySelector(`iframe[name="${iframeName}"]`);
 
-params.append("name", data.fullName);
-params.append("phone", data.phone);
-params.append("email", data.email);
-params.append("sellingPlatform", data.currentPlatform);
-params.append("weeklyOrders", data.weeklyOrders);
-params.append("source", "SaaS Landing Page");
-params.append("userAgent", navigator.userAgent);
-params.append("submittedAt", data.registeredAt);
+  if (!iframe) {
+    iframe = document.createElement("iframe");
+    iframe.name = iframeName;
+    iframe.style.display = "none";
+    document.body.appendChild(iframe);
+  }
 
-const requestUrl = `${WEBHOOK_URL}?${params.toString()}`;
+  const tempForm = document.createElement("form");
+  tempForm.method = "POST";
+  tempForm.action = WEBHOOK_URL;
+  tempForm.target = iframeName;
+  tempForm.style.display = "none";
+  tempForm.acceptCharset = "UTF-8";
 
-await fetch(requestUrl, {
-  method: "GET",
-  mode: "no-cors"
+  const fields = {
+    name: data.fullName,
+    phone: data.phone,
+    email: data.email,
+    sellingPlatform: data.currentPlatform,
+    weeklyOrders: data.weeklyOrders,
+    source: "SaaS Landing Page",
+    userAgent: navigator.userAgent,
+    submittedAt: data.registeredAt
+  };
+
+  Object.keys(fields).forEach((key) => {
+    const input = document.createElement("input");
+    input.type = "hidden";
+    input.name = key;
+    input.value = fields[key] || "";
+    tempForm.appendChild(input);
+  });
+
+  document.body.appendChild(tempForm);
+
+  let resolved = false;
+
+  const finish = () => {
+    if (resolved) return;
+
+    resolved = true;
+
+    setTimeout(() => {
+      tempForm.remove();
+    }, 300);
+
+    resolve();
+  };
+
+  iframe.onload = finish;
+
+  tempForm.submit();
+
+  // احتياطي لو iframe.onload اتأخر بسبب منع المتصفح قراءة الاستجابة
+  setTimeout(finish, 1500);
 });
 ```
 
