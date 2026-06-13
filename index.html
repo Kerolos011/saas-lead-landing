@@ -22,6 +22,7 @@
   </script>
 
 </head>
+
 <body>
   <header class="site-header" aria-label="رأس الصفحة">
     <div class="container nav">
@@ -29,8 +30,12 @@
         <span class="brand-mark">م</span>
         <span class="brand-text">منصة المتاجر</span>
       </a>
-      <a class="nav-cta" href="#lead-form">سجل اهتمامك</a>
-    </div>
+
+```
+  <a class="nav-cta" href="#lead-form">سجل اهتمامك</a>
+</div>
+```
+
   </header>
 
   <main id="top">
@@ -65,11 +70,23 @@
         <p>مش هنبيعلك حاجة دلوقتي. الهدف نعرف احتياجك ونتواصل مع المهتمين وقت التجربة.</p>
       </div>
 
-      <form id="lead-form" class="lead-form" novalidate>
+      <form
+        id="lead-form"
+        class="lead-form"
+        method="POST"
+        action="https://script.google.com/macros/s/AKfycbwKZ-7Fl5QKK89m4SrvBwcnS2szP505gEe9O3F4f03mhrS4qP4DgRJ7aj2_XNKOSFPG/exec"
+        target="lead-hidden-frame"
+        accept-charset="UTF-8"
+        novalidate
+      >
         <div class="field-group hidden-field" aria-hidden="true">
           <label for="website">Website</label>
           <input id="website" name="website" type="text" tabindex="-1" autocomplete="off" />
         </div>
+
+        <input type="hidden" id="source" name="source" value="SaaS Landing Page" />
+        <input type="hidden" id="userAgent" name="userAgent" value="" />
+        <input type="hidden" id="submittedAt" name="submittedAt" value="" />
 
         <div class="field-group">
           <label for="fullName">الاسم بالكامل <span>*</span></label>
@@ -218,7 +235,7 @@
     </div>
   </footer>
 
-  <script src="script.js"></script>
-
+  <iframe id="lead-hidden-frame" name="lead-hidden-frame" style="display:none;"></iframe>
+  <script src="script.js?v=post-final"></script>
 </body>
 </html>
