@@ -5,6 +5,7 @@ const form = document.getElementById("lead-form");
 const submitButton = document.getElementById("submitButton");
 const successMessage = document.getElementById("successMessage");
 const year = document.getElementById("year");
+const iframe = document.getElementById("lead-hidden-frame");
 
 if (year) {
 year.textContent = new Date().getFullYear();
@@ -14,6 +15,11 @@ if (!form) {
 console.error("Form not found: تأكد أن id='lead-form' موجود في index.html");
 return;
 }
+
+form.method = "POST";
+form.action = WEBHOOK_URL;
+form.target = "lead-hidden-frame";
+form.acceptCharset = "UTF-8";
 
 function setError(fieldName, message) {
 const field = document.querySelector(`[name="${fieldName}"]`);
@@ -61,18 +67,15 @@ clearErrors();
 ```
 let isValid = true;
 
-// Honeypot ضد البوتات
 if (data.website) {
   return false;
 }
 
-// الاسم فقط إلزامي
 if (!data.fullName || data.fullName.length < 3) {
   setError("fullName", "اكتب الاسم بالكامل.");
   isValid = false;
 }
 
-// رقم الموبايل اختياري، لكن لو اتكتب لازم يكون صحيح
 const egyptPhonePattern = /^(?:\+?20|0)?1[0125][0-9]{8}$/;
 
 if (data.phone && !egyptPhonePattern.test(data.phone)) {
@@ -80,7 +83,6 @@ if (data.phone && !egyptPhonePattern.test(data.phone)) {
   isValid = false;
 }
 
-// البريد الإلكتروني اختياري، لكن لو اتكتب لازم يكون صحيح
 if (data.email) {
   const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
@@ -105,82 +107,48 @@ return isValid;
 
 }
 
-function submitLead(data) {
-return new Promise((resolve, reject) => {
-if (
-!WEBHOOK_URL ||
-!WEBHOOK_URL.startsWith("https://script.google.com/macros/s/") ||
-!WEBHOOK_URL.endsWith("/exec")
-) {
-reject(new Error("رابط Google Apps Script Webhook غير مضبوط أو لا ينتهي بـ /exec"));
-return;
-}
+function setHiddenValue(id, value) {
+const element = document.getElementById(id);
 
 ```
-  const iframeName = "googleAppsScriptHiddenFrame";
-  let iframe = document.querySelector(`iframe[name="${iframeName}"]`);
+if (element) {
+  element.value = value || "";
+}
+```
 
-  if (!iframe) {
-    iframe = document.createElement("iframe");
-    iframe.name = iframeName;
-    iframe.style.display = "none";
-    document.body.appendChild(iframe);
-  }
+}
 
-  const tempForm = document.createElement("form");
-  tempForm.method = "POST";
-  tempForm.action = WEBHOOK_URL;
-  tempForm.target = iframeName;
-  tempForm.style.display = "none";
-  tempForm.acceptCharset = "UTF-8";
-
-  const fields = {
-    name: data.fullName,
-    phone: data.phone,
-    email: data.email,
-    sellingPlatform: data.currentPlatform,
-    weeklyOrders: data.weeklyOrders,
-    source: "SaaS Landing Page",
-    userAgent: navigator.userAgent,
-    submittedAt: data.registeredAt
-  };
-
-  Object.keys(fields).forEach((key) => {
-    const input = document.createElement("input");
-    input.type = "hidden";
-    input.name = key;
-    input.value = fields[key] || "";
-    tempForm.appendChild(input);
-  });
-
-  document.body.appendChild(tempForm);
-
-  let resolved = false;
-
-  const finish = () => {
-    if (resolved) return;
-
-    resolved = true;
-
-    setTimeout(() => {
-      tempForm.remove();
-    }, 300);
-
-    resolve();
-  };
-
-  iframe.onload = finish;
-
-  tempForm.submit();
-
-  // احتياطي لو iframe.onload اتأخر بسبب منع المتصفح قراءة الاستجابة
-  setTimeout(finish, 1500);
+function trackLeadSubmit(payload) {
+if (typeof gtag === "function") {
+gtag("event", "lead_submit", {
+send_to: "G-67Q5HKNXBM",
+event_category: "lead_generation",
+event_label: payload.currentPlatform,
+weekly_orders: payload.weeklyOrders
 });
+}
+}
+
+function showSuccess(payload) {
+trackLeadSubmit(payload);
+
+```
+form.reset();
+form.hidden = true;
+
+if (successMessage) {
+  successMessage.hidden = false;
+}
+
+if (submitButton) {
+  submitButton.disabled = false;
+  submitButton.textContent = "سجل الآن";
+}
 ```
 
 }
 
-form.addEventListener("submit", async (event) => {
+form.addEventListener("submit", (event) => {
 event.preventDefault();
 event.stopPropagation();
 
@@ -191,33 +159,28 @@ if (!validateForm(payload)) {
   return;
 }
 
+setHiddenValue("source", "SaaS Landing Page");
+setHiddenValue("userAgent", navigator.userAgent);
+setHiddenValue("submittedAt", payload.registeredAt);
+
 submitButton.disabled = true;
 submitButton.textContent = "جاري التسجيل...";
 
-try {
-  await submitLead(payload);
+let completed = false;
 
-  // Google Analytics Lead Event
-  if (typeof gtag === "function") {
-    gtag("event", "lead_submit", {
-      send_to: "G-67Q5HKNXBM",
-      event_category: "lead_generation",
-      event_label: payload.currentPlatform,
-      weekly_orders: payload.weeklyOrders
-    });
-  }
+const finish = () => {
+  if (completed) return;
+  completed = true;
+  showSuccess(payload);
+};
 
-  form.reset();
-  form.hidden = true;
-  successMessage.hidden = false;
-
-} catch (error) {
-  alert(error.message || "حصل خطأ أثناء التسجيل. حاول مرة أخرى.");
-
-} finally {
-  submitButton.disabled = false;
-  submitButton.textContent = "سجل الآن";
+if (iframe) {
+  iframe.onload = finish;
 }
+
+HTMLFormElement.prototype.submit.call(form);
+
+setTimeout(finish, 2000);
 ```
 
 });
